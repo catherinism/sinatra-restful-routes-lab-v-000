@@ -12,6 +12,7 @@ class ApplicationController < Sinatra::Base
 
 #new action
   get '/recipes/new' do
+
     erb :new
   end
 
@@ -25,5 +26,11 @@ class ApplicationController < Sinatra::Base
     @recipe = Recipe.find_by_id(params[:id])
     erb :show
   end
-  
+
+#edit action
+  get '/recipes/:id' do
+    @recipe = Recipe.find_by_id(params[:id])
+    erb :edit
+  end
+
 end
