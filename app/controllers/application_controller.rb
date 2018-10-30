@@ -1,39 +1,34 @@
+require './config/environment'
+
 class ApplicationController < Sinatra::Base
+  # register Sinatra::ActiveRecordExtension
+  set :views, Proc.new { File.join(root, "../views/") }
+
   configure do
     set :public_folder, 'public'
     set :views, 'app/views'
   end
 
-  #new action
-    get '/recipes/new' do
-      erb :new
-    end
+  get '/recipes/new' do #loads new form
+    erb :new
+  end
 
-#index action
-  get '/recipes' do
-    #binding.pry
+  get '/recipes' do #loads index page
     @recipes = Recipe.all
     erb :index
   end
 
-  post '/recipes' do
-    @recipe = Recipe.create(name: params[:name], ingredients: params[:ingredients], cook_time: params[:cook_time])
-    redirect to "recipes/#{@recipe.id}"
-  end
-
-#show action
-  get '/recipes/:id' do
+  get '/recipes/:id' do  #loads show page
     @recipe = Recipe.find_by_id(params[:id])
     erb :show
   end
 
-#edit action
-  get '/recipes/:id/edit' do #edit form
+  get '/recipes/:id/edit' do #loads edit form
     @recipe = Recipe.find_by_id(params[:id])
     erb :edit
   end
 
-  patch 'recipes/:id' do #edit action
+  patch '/recipes/:id' do  #updates a recipe
     @recipe = Recipe.find_by_id(params[:id])
     @recipe.name = params[:name]
     @recipe.ingredients = params[:ingredients]
@@ -42,12 +37,15 @@ class ApplicationController < Sinatra::Base
     redirect to "/recipes/#{@recipe.id}"
   end
 
-  #delete action
+  post '/recipes' do  #creates a recipe
+    @recipe = Recipe.create(params)
+    redirect to "/recipes/#{@recipe.id}"
+  end
 
-  delete '/recipes/:id/delete' do
+  delete '/recipes/:id/delete' do #delete action
   @recipe = Recipe.find_by_id(params[:id])
   @recipe.delete
-  redirect to '/recipe'
+  redirect to '/recipes'
 end
 
 
