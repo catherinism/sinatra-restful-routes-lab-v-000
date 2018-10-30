@@ -28,12 +28,12 @@ class ApplicationController < Sinatra::Base
   end
 
 #edit action
-  get '/recipes/:id' do
+  get '/recipes/:id' do #edit form
     @recipe = Recipe.find_by_id(params[:id])
     erb :edit
   end
 
-  patch 'recipes/:id' do
+  patch 'recipes/:id' do #edit action
     @recipe = Recipe.find_by_id(params[:id])
     @recipe.name = params[:name]
     @recipe.ingredients = params[:ingredients]
