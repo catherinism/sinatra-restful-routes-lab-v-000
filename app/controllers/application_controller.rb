@@ -43,6 +43,8 @@ class ApplicationController < Sinatra::Base
     redirect to "/recipes/show"
   end
 
+  #delete action
+
 
 
 end
